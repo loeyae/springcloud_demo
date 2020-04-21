@@ -1,0 +1,53 @@
+#echo $(openssl rand -base64 32) > erlang.cookie
+#kubectl create secret generic erlang.cookie --from-file=erlang.cookie -n my-dev
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: my-cloud
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: service-center
+  namespace: my-cloud
+  labels:
+    app: service-center
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-center
+  template:
+    metadata:
+      labels:
+        app: service-center
+    spec:
+      containers:
+        - name: service-center
+          image: service_center:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9900
+              name: port-9900
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: service-center
+  name: service-center
+  namespace: my-cloud
+spec:
+  ports:
+    - port: 9900
+      name: port-9900
+      protocol: TCP
+      targetPort: 9900
+  selector:
+    app: service-center
+  externalIPs:
+    - 192.168.1.220
