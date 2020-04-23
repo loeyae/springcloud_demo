@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: my_eureka
+  security:
+    basic:
+      enable: true #开启基于HTTP basic的认证
+    user: #配置用户的账号信息
+      name: ${EUREKA_USER:admin}
+      password: ${EUREKA_PASSWORD:ad2020min}
+
 
 eureka:
   instance:
