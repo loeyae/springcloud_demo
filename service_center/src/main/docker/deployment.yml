@@ -28,7 +28,9 @@ spec:
       containers:
         - name: service-center
           image: service_center:latest
-          command: ["/bin/sh","-c","java -Xmx800m -Xms800m -Xmn300m -Djava.security.egd=file:/dev/./urandom -jar /app.jar --spring.profiles.active=$ENV"]
+          #command: ["/bin/sh","-c","java -Xmx800m -Xms800m -Xmn300m -Djava.security.egd=file:/dev/./urandom -jar
+          #/app.jar --spring.profiles.active=$ENV"]
+          command: ["/bin/sh","-c","java -Xmx800m -Xms800m -Xmn300m -Djava.security.egd=file:/dev/./urandom -jar /app.jar"]
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9900
