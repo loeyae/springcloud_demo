@@ -21,3 +21,30 @@ spring:
               args:
                 regexp: "'/v1/'+serviceId+'/(?<remaining>.*)'"
                 replacement: "'/${remaining}'"
+      routes:
+        - id: andyzh-demo
+          uri: lb://andyzh-demo
+          predicates:
+            - Path=/demo/**
+          filters:
+            - StripPrefix=1
+
+##开启所有端点
+management:
+  endpoint:
+    pause:
+      enabled: true
+    restart:
+      enabled: true
+    refresh:
+      enabled: true
+    resume:
+      enabled: true
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'

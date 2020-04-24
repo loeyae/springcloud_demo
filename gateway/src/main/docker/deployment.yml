@@ -1,0 +1,50 @@
+
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: my-gateway
+  namespace: my-cloud
+  labels:
+    app: my-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-gateway
+  template:
+    metadata:
+      labels:
+        app: my-gateway
+    spec:
+      containers:
+        - name: my-gateway
+          image: gateway:latest
+          command: ["/bin/sh","-c","java -Xmx800m -Xms800m -Xmn300m -Djava.security.egd=file:/dev/./urandom -jar /app.jar --spring.profiles.active=$ENV"]
+#          command: ["/bin/sh","-c","java -Xmx800m -Xms800m -Xmn300m -Djava.security.egd=file:/dev/./urandom -jar /app.jar"]
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: port-8000
+          env:
+            - name: ENV
+              value: test
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-gateway
+  name: my-gateway
+  namespace: my-cloud
+spec:
+  ports:
+    - port: 8000
+      name: port-8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app: my-gateway
+  externalIPs:
+    - 192.168.1.220
