@@ -1,0 +1,23 @@
+server:
+  port: ${PORT:8000}
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: andyzh-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+          predicates:
+            - name: Path
+              args:
+                pattern: "'/v1/'+serviceId+'/**'"
+          filters:
+            - name: RewritePath
+              args:
+                regexp: "'/v1/'+serviceId+'/(?<remaining>.*)'"
+                replacement: "'/${remaining}'"

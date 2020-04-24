@@ -7,9 +7,9 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 /**
  * Service Center main.
  *
- * @date: 2019-12-24
- * @version: 1.0
- * @author: zhangyi07@beyondsoft.com
+ * @date 2019-12-24
+ * @version 1.0
+ * @author zhangyi07@beyondsoft.com
  */
 @SpringBootApplication
 @EnableEurekaServer
